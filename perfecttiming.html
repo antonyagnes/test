@@ -1,0 +1,253 @@
+
+<html>
+<style>
+body{
+background:black;
+}
+h1.heading{
+font: italic 75px/3px Comic Sans, serif;
+text-align: center;
+margin:75px 0px;
+color:white;
+}
+input[type=text], select {
+     width: 20%;
+    padding: 12px 20px;
+    margin: 30px 525px;
+    box-sizing: border-box;
+    border:none;
+    border-bottom: 2px solid black;
+    font:italic Comic Sans;
+    color:black;
+}
+
+h1.h1countup{
+padding: 20px 50px;
+    margin: 10px 100px;
+	font: italic bold 50px/30px Comic Sans, serif;
+    color:white;
+}
+p.pcountup{
+margin: 30px 10px;
+font:  30px/3px Comic Sans, serif;
+color:white;
+}
+button.upstart{
+	width: 20%;
+    background-color: white;
+    color: black;
+    padding: 10px 10px;
+    margin: 30px 70px;
+    border: none;
+    position:center;
+    border-radius: 1px;
+    cursor: pointer;
+    font-family:Comis Sans,serif;
+    font-size:20;
+    font-style:italic;
+    font-weight:bold;
+}
+button.resetup{
+	width: 20%;
+     background-color: white;
+    color: black;
+    padding: 10px 0px;
+    margin: 30px 0px;
+    border: none;
+    border-radius: 1px;
+    cursor: pointer;
+    font-family:Comis Sans,serif;
+    font-size:20;
+    font-style:italic;
+    font-weight:bold;
+}
+h1.h1countdown{
+	padding: 20px 0px;
+    margin: 10px 250px;
+    margin-top:10px;
+    margin-bottom:10px;
+    margin-left:370px;
+    margin-right:0px;
+	font: italic bold 50px/30px Comic Sans, serif;
+    color:white;
+    
+}
+p.pcountdown{
+margin-top: 30px;
+margin-bottom:30px;
+margin-left:245px;
+margin-right:0px;
+font:  30px/3px Comic Sans, serif;
+color:white;
+}
+button.downstart{
+	width: 14%;
+     background-color: white;
+    color: black;
+    padding: 10px 10px;
+    margin: 30px;
+    margin-left:400px;
+    margin-right:50px;
+    border: none;
+    position:center;
+    border-radius: 1px;
+    cursor: pointer;
+    font-family:Comis Sans,serif;
+    font-size:20;
+    font-style:italic;
+    font-weight:bold;
+}
+button.resetdown{
+	width: 14%;
+    padding: 10px 0px;
+    margin: 30px;
+     background-color: white;
+    color: black;
+    border: none;
+    border-radius: 1px;
+    cursor: pointer;
+    font-family:Comis Sans,serif;
+    font-size:20;
+    font-style:italic;
+    font-weight:bold;
+}
+button:disabled{
+background-color:red;
+}
+</style>
+<script>
+var time = 1;
+var running = 0;
+var dtime = 0;
+var drunning = 0;
+function calculate(t){
+    var days=Math.floor(t / 86400);
+    var hours = Math.floor((t - (days * 86400 ))/3600);
+    var minutes = Math.floor((t - (days * 86400 ) - (hours *3600 ))/60);
+    var secs = Math.floor((t - (days * 86400 ) - (hours *3600 ) -(minutes*60)));
+    if(minutes < 10){
+                minutes = "0" + minutes;
+            }
+            if(hours < 10){
+                hours = "0" + hours;
+            }
+            if(days < 10){
+                days = "0" + days;
+            }
+            if(secs < 10){
+                secs = "0" + secs;
+            }
+    
+    var x =  days + " days : " + hours + " hours : " + minutes + " minutes : " + secs +" seconds";
+    return x;
+}
+function startPauseCountUp(){
+var countTarget = document.getElementById("target").value;
+if(countTarget == ""){
+alert("Enter valid number of seconds");
+}
+else{
+    if(running == 0){
+        running = 1; 
+        increment();
+    document.getElementById("startPauseCountUp").innerHTML = "Pause";
+    }
+    else{
+        running = 0;
+    document.getElementById("startPauseCountUp").innerHTML = "Resume"; 
+    }
+}
+}
+function resetCountUp(){
+    running = 0;
+    time = 1;
+    document.getElementById("startPauseCountUp").innerHTML = "Start";
+    document.getElementById("countup").innerHTML = "00 days : 00 hours : 00 minutes : 00 seconds";
+    document.getElementById("startPauseCountUp").disabled=false;
+}
+
+function increment(){
+var countTarget=document.getElementById("target").value;
+var mid = calculate(countTarget);
+    if(running == 1){
+        setTimeout(function(){           
+    	var y = calculate(time);
+			if(running == 1){
+				document.getElementById("countup").innerHTML = y;
+				time++;
+			}
+            if(mid != y){
+            increment();
+            }else{
+            document.getElementById("countup").innerHTML = mid;
+            document.getElementById("startPauseCountUp").disabled=true;
+            }  
+        },1000)
+    }
+}
+function startPauseCountDown(){
+var countTarget = document.getElementById("target").value;
+if(document.getElementById("startPauseCountDown").innerHTML == "Start") {
+	dtime = countTarget;
+}
+
+if(countTarget == ""){
+alert("Enter valid number of seconds");
+}
+else{
+    if(drunning == 0){
+        drunning = 1;
+		decrement();
+    document.getElementById("startPauseCountDown").innerHTML = "Pause";
+    }
+    else{
+        drunning = 0;
+    document.getElementById("startPauseCountDown").innerHTML = "Resume"; 
+    }
+}
+}
+function resetCountDown(){
+    drunning = 0;
+    dtime = 0;
+    var countTarget = document.getElementById("target").value;
+    document.getElementById("countdown").innerHTML=calculate(countTarget);
+    document.getElementById("startPauseCountDown").innerHTML = "Start";
+    document.getElementById("startPauseCountDown").disabled=false;
+}
+function decrement(){
+if(drunning == 1){
+        setTimeout(function(){
+            var mid = calculate(dtime);
+			if(drunning == 1){
+            document.getElementById("countdown").innerHTML = mid;
+              dtime = dtime-1;
+			  }
+              if (dtime>=0){
+            decrement();
+            }
+            else{
+            document.getElementById("countdown").innerHTML = "00 days : 00 hours : 00 minutes : 00 seconds";
+            document.getElementById("startPauseCountDown").disabled = true;
+            }
+        },1000)
+    }
+   
+}
+</script>
+<body>
+<h1 class="heading">Perfect timing</h1>
+<input type="text" id="target" placeholder="Please enter the number of seconds" onkeypress="return (event.charCode == 8 || event.charCode == 0) ? null : event.charCode >= 48 && event.charCode <= 57" >
+<div style="float:left">
+<h1 class="h1countup">Count Up </h1>
+<p class ="pcountup" id="countup">00 days : 00 hours : 00 minutes : 00 seconds</p>
+<button class="upstart" id="startPauseCountUp" onclick="startPauseCountUp()">Start</button>
+<button class="resetup" id="resetCountUp" onclick="resetCountUp()">Reset</button>
+</div>
+<div style="float:left" >
+<h1 class="h1countdown">Count Down</h1>
+<p class ="pcountdown" id="countdown">00 days : 00 hours : 00 minutes : 00 seconds</p>
+<button class="downstart" id="startPauseCountDown"onclick="startPauseCountDown()">Start</button>
+<button class="resetdown" id="resetCountDown" onclick="resetCountDown()">Reset</button>
+</div>
+</body>
+</html>
